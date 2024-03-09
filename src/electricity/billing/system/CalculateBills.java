@@ -135,6 +135,7 @@ public class CalculateBills extends JFrame implements ActionListener {
         cancel.setBounds(200,300,100,25);
         cancel.setBackground(Color.BLACK);
         cancel.setForeground(Color.WHITE);
+        cancel.addActionListener(this);
         panel.add(cancel);
 
         setLayout(new BorderLayout());
@@ -156,6 +157,54 @@ public class CalculateBills extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==submit){
+            String smeter=meterNumChoice.getSelectedItem();
+            String sunit=unitConsumedText.getText();
+            String smonth=monthChoice.getSelectedItem();
+
+            int total=0;
+            int units=Integer.parseInt(sunit);
+            String query_tax="select * from tax";
+
+            try{
+                Database database =new Database();
+                ResultSet resultSet=database.statement.executeQuery(query_tax);
+                while(resultSet.next()){
+                    int cost=Integer.parseInt(resultSet.getString("cost_per_unit"));
+                    int meterRent=Integer.parseInt(resultSet.getString("meter_rent"));
+                    int serviceCharge=Integer.parseInt(resultSet.getString("service_charge"));
+                    int serviceTax=Integer.parseInt(resultSet.getString("service_tax"));
+                    int fixedTax=Integer.parseInt(resultSet.getString("fixed_tax"));
+
+                    total+=units*cost;
+                    total+=meterRent;
+                    total+=serviceCharge;
+                    total+=serviceTax;
+                    total+=fixedTax;
+                }
+
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
+
+
+
+            String query_tax_bill="insert into bill values('"+smeter+"','"+smonth+"','"+sunit+"','"+total+"','Not Paid')";
+            try {
+                Database database=new Database();
+                database.statement.executeUpdate(query_tax_bill);
+
+                JOptionPane.showMessageDialog(null,"Customer Bill updated successfully");
+                setVisible(false);
+
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
+
+        }
+        else {
+            setVisible(false);
+        }
 
     }
 }
