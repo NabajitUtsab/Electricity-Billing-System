@@ -2,10 +2,8 @@ package electricity.billing.system;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
+import java.sql.ResultSet;
 
 public class Signup extends JFrame implements ActionListener {
     Choice choicingAsText;
@@ -35,6 +33,7 @@ public class Signup extends JFrame implements ActionListener {
         meterNoText.setVisible(true);
         add(meterNoText);
 
+
         JLabel employerId=new JLabel("EMPLOYER ID");
         employerId.setBounds(30,100,125,20);
         employerId.setVisible(false);
@@ -57,9 +56,32 @@ public class Signup extends JFrame implements ActionListener {
         name.setBounds(30,180,125,20);
         add(name);
 
-        nameText=new JTextField();
+        nameText=new JTextField("");
         nameText.setBounds(170,180,125,20);
         add(nameText);
+
+
+        meterNoText.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                try{
+                    Database database =new Database();
+                    ResultSet resultSet = database.statement.executeQuery("select * from signup where meter_no='"+meterNoText.getText()+"'");
+                    while (resultSet.next()){
+                        nameText.setText(resultSet.getString("name"));
+                    }
+                }catch (Exception exception){
+                    exception.printStackTrace();
+                }
+            }
+        });
+
+
 
         JLabel password=new JLabel("PASSWORD");
         password.setBounds(30,220,125,20);
@@ -76,22 +98,24 @@ public class Signup extends JFrame implements ActionListener {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 String user=choicingAsText.getSelectedItem();
-                if(user.equals("Admin"))
+                if(user.equals("Customer"))
+                {
+                    meterNo.setVisible(true);
+                    meterNoText.setVisible(true);
+
+
+                    employerId.setVisible(false);
+                    employerIdText.setVisible(false);
+                    nameText.setEditable(false);
+
+                }
+                else if(user.equals("Admin"))
                 {
                     meterNo.setVisible(false);
                     meterNoText.setVisible(false);
 
                     employerId.setVisible(true);
                     employerIdText.setVisible(true);
-
-                }
-                else
-                {
-                    meterNo.setVisible(true);
-                    meterNoText.setVisible(true);
-
-                    employerId.setVisible(false);
-                    employerIdText.setVisible(false);
 
                 }
 
@@ -146,7 +170,13 @@ public class Signup extends JFrame implements ActionListener {
             String sMeterNo=meterNoText.getText();
             try{
                 Database database=new Database();
-                String query="insert into Signup value ('"+sMeterNo+"','"+sUserName+"','"+sName+"','"+sPassword+"','"+sLoggingAs+"')";
+                String query=null;
+                if(choicingAsText.equals("Admin")){
+                    query="insert into Signup value ('"+sMeterNo+"','"+sUserName+"','"+sName+"','"+sPassword+"','"+sLoggingAs+"')";
+                }else {
+                    query ="UPDATE Signup set username='"+sUserName+"', password='"+sPassword+"',usertype='"+sLoggingAs+"'  where meter_no='"+sMeterNo+"'";
+                }
+
 
                 database.statement.executeUpdate(query);
                 JOptionPane.showMessageDialog(null,"Account Created Successfully");
