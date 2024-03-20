@@ -92,12 +92,12 @@ public class Login extends JFrame implements ActionListener {
 
             try {
                 Database database=new Database();
-                String query="select * from Signup where username = '"+sUserName+"' and password= '"+sPassword+"' and usertype = '"+user+"' ";
+                String query="select * from signup where username = '"+sUserName+"' and password= '"+sPassword+"' and usertype = '"+user+"' ";
                 ResultSet resultSet= database.statement.executeQuery(query);
                 if(resultSet.next())
                 {
                     setVisible(false);
-                    new Main_Class();
+                    new Main_Class(user);
                 }
                 else {
                     JOptionPane.showMessageDialog(null,"Invalid login");
