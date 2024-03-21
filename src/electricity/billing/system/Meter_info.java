@@ -141,6 +141,7 @@ public class Meter_info extends JFrame implements ActionListener {
                 c.statement.executeUpdate(query_meterInfo);
                 JOptionPane.showMessageDialog(null,"Meter Information submitted successfully");
                 setVisible(false);
+                new Login();
 
             }catch (Exception exception){
                 exception.printStackTrace();

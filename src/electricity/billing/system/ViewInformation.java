@@ -2,14 +2,20 @@ package electricity.billing.system;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
-public class ViewInformation extends JFrame {
+public class ViewInformation extends JFrame implements ActionListener {
 
     JLabel heading,name,meterNo,address,city,email,phone;
     JLabel nameText,meterNoText,addressText,cityText,emailText,phoneText;
-    ViewInformation(){
+    JButton cancelButton;
+    String getMeterNo;
+    ViewInformation(String getMeterNo){
         super("View Customer Information");
 
+        this.getMeterNo=getMeterNo;
         setBounds(270,70,850,650);
         getContentPane().setBackground(Color.white);
         setLayout(null);
@@ -72,11 +78,57 @@ public class ViewInformation extends JFrame {
         phoneText.setBounds(500,200,150,20);
         add(phoneText);
 
+
+
+        try{
+            Database database=new Database();
+            ResultSet resultSet=database.statement.executeQuery("select * from new_customer where meter_no='"+getMeterNo+"'");
+
+            if(resultSet.next()){
+                nameText.setText(resultSet.getString("name"));
+                meterNoText.setText(resultSet.getString("meter_no"));
+                addressText.setText(resultSet.getString("address"));
+                cityText.setText(resultSet.getString("city"));
+                emailText.setText(resultSet.getString("email"));
+                phoneText.setText(resultSet.getString("phone"));
+
+            }
+
+        }catch(Exception exception){
+           exception.printStackTrace();
+        }
+
+
+        cancelButton =new JButton("Cancel");
+        cancelButton.setBackground(new Color(24, 118, 212));
+        cancelButton.setForeground(Color.WHITE);
+        cancelButton.setBounds(220,300,120,25);
+        cancelButton.addActionListener(this);
+        add(cancelButton);
+
+        ImageIcon imageIcon =new ImageIcon(ClassLoader.getSystemResource("Icon/viewInfo.png"));
+        Image image = imageIcon.getImage().getScaledInstance(600,300,Image.SCALE_DEFAULT);
+        ImageIcon imageIconAfterScale=new ImageIcon(image);
+        JLabel imageLabel= new JLabel(imageIconAfterScale);
+        imageLabel.setBounds(100,320,600,300);
+        add(imageLabel);
+
+
         setVisible(true);
     }
 
 
     public static void main(String[] args) {
-        new ViewInformation();
+        new ViewInformation("");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource()==cancelButton){
+
+            setVisible(false);
+        }
+
+
     }
 }
