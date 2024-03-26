@@ -217,7 +217,7 @@ public class Main_Class extends JFrame implements ActionListener {
             setVisible(false);
         }
         else if (msg.equals("Bill Details")) {
-            // new ViewInformation();
+             new BillDetails(meterNoPass);
             setVisible(false);
         }
         else if (msg.equals("Generate Bill")) {
@@ -225,12 +225,20 @@ public class Main_Class extends JFrame implements ActionListener {
             setVisible(false);
         }
         else if (msg.equals("Notepad")) {
-            // new ViewInformation();
-            setVisible(false);
+            try{
+                Runtime.getRuntime().exec("notepad.exe");
+
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
         }
         else if (msg.equals("Calculator")) {
-            // new ViewInformation();
-            setVisible(false);
+           try{
+               Runtime.getRuntime().exec("calc.exe");
+           }
+           catch (Exception exception){
+               exception.printStackTrace();
+           }
         }
         else if (msg.equals("Exit")) {
 
