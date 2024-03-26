@@ -205,7 +205,7 @@ public class Main_Class extends JFrame implements ActionListener {
             setVisible(false);
         }
         else if (msg.equals("Update Information")) {
-           // new UpdateInformation();
+            new UpdateInformation(meterNoPass);
             setVisible(false);
         }
         else if (msg.equals("View Information")) {
