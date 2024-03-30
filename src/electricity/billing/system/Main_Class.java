@@ -213,7 +213,7 @@ public class Main_Class extends JFrame implements ActionListener {
             setVisible(false);
         }
         else if (msg.equals("Pay Bills")) {
-           // new ViewInformation();
+            new PayBill(meterNoPass);
             setVisible(false);
         }
         else if (msg.equals("Bill Details")) {
