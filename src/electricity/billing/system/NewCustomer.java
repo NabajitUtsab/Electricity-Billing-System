@@ -93,6 +93,7 @@ public class NewCustomer extends JFrame implements ActionListener {
         cancelButton.addActionListener(this);
         panel.add(cancelButton);
 
+
         //setLayout(null);
         setLayout(new BorderLayout());
         add(panel,"Center");

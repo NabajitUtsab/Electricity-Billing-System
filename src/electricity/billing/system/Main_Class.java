@@ -221,7 +221,7 @@ public class Main_Class extends JFrame implements ActionListener {
             setVisible(false);
         }
         else if (msg.equals("Generate Bill")) {
-            // new ViewInformation();
+           new GenerateBill(meterNoPass);
             setVisible(false);
         }
         else if (msg.equals("Notepad")) {
@@ -242,6 +242,7 @@ public class Main_Class extends JFrame implements ActionListener {
         }
         else if (msg.equals("Exit")) {
 
+            new Login();
            setVisible(false);
         }
 

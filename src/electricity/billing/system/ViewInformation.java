@@ -126,6 +126,7 @@ public class ViewInformation extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==cancelButton){
 
+            new Main_Class("Custmer",getMeterNo);
             setVisible(false);
         }
 

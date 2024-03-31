@@ -137,6 +137,7 @@ JButton update,cancel;
             }
         }
         else {
+            new Main_Class("Custmer",meterNoPass);
             setVisible(false);
         }
 
